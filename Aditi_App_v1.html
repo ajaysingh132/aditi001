@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#FF6B00">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Aditi Bharatiya Nrityashala</title>
+<style>
+:root{
+  --s:#FF6B00;--sl:#FF8C38;--sp:#FFF0E0;
+  --p:#006994;--pp:#E0F4FF;
+  --g:#D4A017;--gl:#F2C94C;
+  --gr:#27AE60;--br:#3D1C00;
+  --tx:#1A0A00;--t2:#5C3D1E;--tm:#9E7A5A;
+  --bg:#FFF8F0;--wh:#FFFFFF;--bd:#F0E0CC;
+  --sh:0 4px 20px rgba(61,28,0,.10);
+  --sc:0 2px 12px rgba(61,28,0,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Segoe UI',Arial,sans-serif}
+html,body{height:100%;overflow:hidden;background:#E8D5B7}
+body{display:flex;justify-content:center;align-items:center}
+
+/* ── PHONE SHELL ── */
+.shell{
+  width:min(390px,100vw);
+  height:min(844px,100vh);
+  background:var(--bg);
+  border-radius:clamp(0px,4vw,44px);
+  box-shadow:0 30px 80px rgba(0,0,0,.4);
+  overflow:hidden;position:relative;
+  border:clamp(0px,1vw,10px) solid #1A1A2E;
+}
+.notch{width:120px;height:28px;background:#1A1A2E;border-radius:0 0 18px 18px;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:999}
+
+/* ── SCREENS ── */
+.scr{width:100%;height:100%;position:absolute;top:0;left:0;display:none;flex-direction:column;overflow:hidden;animation:fadeIn .25s ease}
+.scr.on{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SCROLL AREA ── */
+.body{flex:1;overflow-y:auto;padding-bottom:82px}
+.body::-webkit-scrollbar{display:none}
+
+/* ── STATUS BAR ── */
+.sbar{height:44px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 20px 6px;font-size:11px;font-weight:600;flex-shrink:0}
+
+/* ── BOTTOM NAV ── */
+.bnav{position:absolute;bottom:0;left:0;right:0;height:76px;background:var(--wh);display:flex;border-top:1px solid var(--bd);box-shadow:0 -4px 20px rgba(61,28,0,.08);z-index:100;padding-bottom:8px}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding-top:8px}
+.ni-ic{font-size:21px;transition:transform .2s}
+.ni-lb{font-size:10px;font-weight:500;color:var(--tm)}
+.ni.on .ni-ic{transform:scale(1.18)}
+.ni.on .ni-lb{color:var(--s);font-weight:700}
+.ni.on::before{content:'';position:absolute;top:0;width:32px;height:3px;background:var(--s);border-radius:0 0 4px 4px}
+.ni{position:relative}
+
+/* ── COMMON ── */
+.card{background:var(--wh);border-radius:18px;box-shadow:var(--sc);border:1px solid var(--bd)}
+.sec-hd{display:flex;justify-content:space-between;align-items:center;padding:18px 20px 10px}
+.sec-t{font-size:15px;font-weight:700;color:var(--tx)}
+.sec-l{font-size:12px;color:var(--s);font-weight:600;cursor:pointer}
+.tag{padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600}
+.tag-s{background:var(--sp);color:var(--s)}
+.tag-p{background:var(--pp);color:var(--p)}
+.tag-g{background:#FEF9E7;color:var(--g)}
+.hscroll{display:flex;gap:10px;padding:0 20px 4px;overflow-x:auto}
+.hscroll::-webkit-scrollbar{display:none}
+.pbar{height:6px;background:var(--bd);border-radius:6px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,var(--s),#FFB347);border-radius:6px;transition:width .5s}
+
+/* ── BUTTONS ── */
+.btn{width:100%;padding:15px;border-radius:14px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;border:none;transition:all .18s}
+.btn:active{transform:scale(.97)}
+.btn-s{background:linear-gradient(135deg,#FF6B00,#D94A00);color:#fff;box-shadow:0 6px 20px rgba(255,107,0,.35)}
+.btn-o{background:var(--wh);color:var(--s);border:2px solid var(--s)}
+.btn-g{background:linear-gradient(135deg,#27AE60,#1A7A42);color:#fff;box-shadow:0 6px 20px rgba(39,174,96,.35)}
+.btn-p{background:linear-gradient(135deg,#006994,#004F72);color:#fff}
+
+/* ── FORM ── */
+.lbl{font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;display:block}
+.igrp{display:flex;border:2px solid var(--bd);border-radius:14px;overflow:hidden;background:var(--wh);margin-bottom:14px;transition:border-color .2s}
+.igrp:focus-within{border-color:var(--s)}
+.igrp input{flex:1;padding:13px;border:none;outline:none;font-size:15px;font-family:inherit;background:transparent;color:var(--tx)}
+.ipfx{padding:13px 14px;background:var(--sp);font-size:14px;font-weight:600;color:var(--s);border-right:2px solid var(--bd);white-space:nowrap}
+.divdr{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--tm);font-size:12px}
+.divdr::before,.divdr::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+/* ==============================
+   SPLASH
+============================== */
+#sp{background:linear-gradient(160deg,#FF6B00 0%,#D94A00 50%,#3D1C00 100%);justify-content:center;align-items:center;gap:18px}
+.sp-ring-wrap{width:150px;height:150px;position:relative;animation:spinM 10s linear infinite}
+@keyframes spinM{to{transform:rotate(360deg)}}
+.sp-ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(255,200,100,.35);animation:expandR 2.5s ease-out infinite}
+.sp-ring:nth-child(2){animation-delay:.6s;border-color:rgba(255,200,100,.2)}
+.sp-ring:nth-child(3){animation-delay:1.2s;border-color:rgba(255,200,100,.1)}
+@keyframes expandR{0%{transform:scale(.55);opacity:1}100%{transform:scale(1.5);opacity:0}}
+.sp-ic{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:52px;animation:pulseIc 2s ease-in-out infinite}
+@keyframes pulseIc{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.sp-t{font-size:24px;font-weight:700;color:#fff;text-align:center;line-height:1.3}
+.sp-t span{display:block;font-size:13px;font-weight:400;opacity:.8;margin-top:3px}
+.sp-tag{font-size:13px;color:rgba(255,255,255,.7);text-align:center;font-style:italic;padding:0 30px}
+.sp-bar{width:180px;height:3px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden}
+.sp-fill{height:100%;background:linear-gradient(90deg,#FFD700,#FF8C38);animation:spLoad 2.8s ease forwards}
+@keyframes spLoad{0%{width:0}100%{width:100%}}
+
+/* ==============================
+   LOGIN
+============================== */
+#lg{background:var(--bg)}
+.lg-hd{background:linear-gradient(160deg,#FF6B00,#D94A00);padding:52px 24px 36px;position:relative;overflow:hidden}
+.lg-hd::before{content:'';position:absolute;right:-20px;top:-20px;width:180px;height:180px;background:rgba(255,255,255,.06);border-radius:50%}
+.lg-body{padding:28px 22px;flex:1;overflow-y:auto}
+.role-row{display:flex;gap:10px;margin-bottom:18px}
+.role-btn{flex:1;padding:12px 8px;border-radius:14px;border:2px solid var(--bd);background:var(--wh);font-size:13px;font-weight:600;color:var(--t2);cursor:pointer;text-align:center;transition:all .2s}
+.role-btn.active{border-color:var(--s);background:var(--sp);color:var(--s)}
+.role-btn .rb-ic{font-size:22px;display:block;margin-bottom:4px}
+
+/* ==============================
+   HOME
+============================== */
+#hm{background:var(--bg)}
+.hm-hd{background:linear-gradient(135deg,#FF6B00 0%,#D94A00 60%,#3D1C00 100%);padding:46px 22px 24px;position:relative;overflow:hidden}
+.hm-hd::before{content:'';position:absolute;right:0;bottom:0;width:140px;height:140px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='35' fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='2'/%3E%3C/svg%3E") center/contain no-repeat}
+.greet{font-size:13px;color:rgba(255,255,255,.75)}
+.uname{font-size:21px;font-weight:700;color:#fff;margin:2px 0 14px}
+.streak-c{background:rgba(255,255,255,.15);border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:10px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2)}
+.streak-n{font-size:26px;font-weight:700;color:var(--gl)}
+.streak-t{font-size:12px;color:rgba(255,255,255,.85)}
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:0 18px 4px}
+.qcard{background:var(--wh);border-radius:16px;padding:15px;cursor:pointer;box-shadow:var(--sc);border:1px solid var(--bd);transition:all .2s;position:relative;overflow:hidden}
+.qcard:active{transform:scale(.97)}
+.qcard::after{content:'';position:absolute;bottom:0;right:0;width:55px;height:55px;border-radius:50% 0 0 0;opacity:.08}
+.qc-s::after{background:var(--s)}.qc-p::after{background:var(--p)}.qc-g::after{background:var(--g)}.qc-gr::after{background:var(--gr)}
+.qic{font-size:26px;margin-bottom:7px}
+.qt{font-size:13px;font-weight:600;color:var(--tx)}
+.qs{font-size:11px;color:var(--tm);margin-top:2px}
+.cont-card{margin:0 18px;background:var(--wh);border-radius:18px;padding:14px;cursor:pointer;box-shadow:var(--sc);border:1px solid var(--bd);display:flex;gap:13px;align-items:center;transition:all .2s}
+.cont-card:active{transform:scale(.98)}
+.cont-thumb{width:68px;height:68px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;background:linear-gradient(135deg,#FF6B00,#D94A00)}
+.ct{font-size:14px;font-weight:600;color:var(--tx)}
+.cs{font-size:12px;color:var(--tm);margin:2px 0 9px}
+.plb{font-size:11px;color:var(--s);font-weight:600;margin-top:4px}
+.tcard{flex-shrink:0;width:90px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+.tav{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;border:3px solid var(--bd);position:relative}
+.tbdg{position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;background:var(--gr);border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff}
+.tnm{font-size:10px;font-weight:600;color:var(--tx);text-align:center}
+.tst{font-size:10px;color:var(--tm);text-align:center}
+.focus-card{margin:0 18px;background:linear-gradient(135deg,#006994,#004F72);border-radius:16px;padding:15px;color:#fff}
+.fc-sub{font-size:11px;opacity:.75;margin-bottom:5px}
+.fc-t{font-size:17px;font-weight:700}
+.fc-s{font-size:11px;opacity:.75;margin-top:3px}
+.fc-btn{margin-top:11px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 14px;border-radius:18px;font-size:12px;font-family:inherit;cursor:pointer}
+
+/* ==============================
+   COURSES
+============================== */
+#co{background:var(--bg)}
+.co-hd{background:linear-gradient(135deg,#006994,#004F72);padding:46px 22px 22px;position:relative;overflow:hidden}
+.co-hd::before{content:'';position:absolute;right:-10px;bottom:-15px;font-size:90px;opacity:.1}
+.srch{margin:14px 18px 2px;background:var(--wh);border-radius:14px;display:flex;align-items:center;gap:8px;padding:11px 15px;box-shadow:var(--sc);border:1px solid var(--bd)}
+.srch input{border:none;outline:none;flex:1;font-size:14px;font-family:inherit;color:var(--tx);background:transparent}
+.fchip{flex-shrink:0;padding:7px 15px;border-radius:20px;border:2px solid var(--bd);background:var(--wh);font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .2s;font-family:inherit}
+.fchip.on{background:var(--s);border-color:var(--s);color:#fff}
+.dcard{margin:0 18px 13px;background:var(--wh);border-radius:18px;overflow:hidden;cursor:pointer;box-shadow:var(--sc);border:1px solid var(--bd);display:flex;align-items:stretch;transition:all .2s}
+.dcard:active{transform:scale(.98)}
+.dbanner{width:95px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:42px}
+.dbody{padding:13px 13px 13px 0;flex:1}
+.dt{font-size:15px;font-weight:700;color:var(--tx)}
+.dorg{font-size:11px;color:var(--tm);margin:2px 0 5px}
+.ddesc{font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:7px}
+
+/* ==============================
+   COURSE DETAIL
+============================== */
+#cd{background:var(--bg)}
+.cd-hd{background:linear-gradient(160deg,#FF6B00,#D94A00,#3D1C00);padding:46px 22px 24px;position:relative;overflow:hidden}
+.bk{font-size:16px;cursor:pointer;color:#fff;margin-bottom:14px;display:inline-flex;align-items:center;gap:6px;opacity:.9}
+.vmeta{display:flex;gap:14px;margin-top:14px;flex-wrap:wrap}
+.vm{font-size:12px;color:rgba(255,255,255,.8)}
+.vpl{background:linear-gradient(135deg,#1A0A00,#3D1C00);border-radius:16px;height:195px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;position:relative;overflow:hidden;margin-bottom:18px}
+.vpl::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,107,0,.12))}
+.pbtn{width:58px;height:58px;border-radius:50%;background:rgba(255,107,0,.9);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 28px rgba(255,107,0,.5);position:relative}
+.vl{font-size:12px;color:rgba(255,255,255,.65)}
+.prg-card{background:var(--wh);border-radius:16px;padding:15px;margin-bottom:18px;box-shadow:var(--sc);border:1px solid var(--bd)}
+.prg-row{display:flex;justify-content:space-between;margin-bottom:9px}
+.ll{font-size:13px;font-weight:600;color:var(--tx)}
+.lv{font-size:13px;font-weight:700;color:var(--s)}
+.li{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--bd);cursor:pointer}
+.li:last-child{border-bottom:none}
+.lnum{width:31px;height:31px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.lnum.done{background:var(--gr);color:#fff}
+.lnum.cur{background:var(--s);color:#fff}
+.lnum.lock{background:var(--bd);color:var(--tm)}
+.linf{flex:1}
+.lt{font-size:13px;font-weight:600;color:var(--tx)}
+.lt.lock{color:var(--tm)}
+.ld{font-size:11px;color:var(--tm);margin-top:2px}
+.lar{font-size:14px;color:var(--tm)}
+
+/* ==============================
+   PRACTICE
+============================== */
+#pr{background:var(--bg)}
+.pr-hd{background:linear-gradient(135deg,#27AE60,#1A7A42);padding:46px 22px 22px;position:relative;overflow:hidden}
+.cam{margin:18px;background:linear-gradient(135deg,#0A0A0A,#1A1A2E);border-radius:20px;height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden;border:2px solid rgba(255,107,0,.3)}
+.scanl{position:absolute;width:100%;height:2px;background:linear-gradient(90deg,transparent,#00FF88,transparent);animation:scan 2.2s linear infinite;box-shadow:0 0 10px #00FF88}
+@keyframes scan{0%{top:10%}100%{top:90%}}
+.sk{font-size:75px;opacity:.25;animation:skPulse 2.5s ease-in-out infinite}
+@keyframes skPulse{0%,100%{opacity:.25;transform:scale(1)}50%{opacity:.4;transform:scale(1.06)}}
+.aibdg{padding:4px 12px;border-radius:20px;background:rgba(255,107,0,.25);color:#FFB347;font-size:11px;font-weight:600;border:1px solid rgba(255,107,0,.35);z-index:1}
+.camlb{font-size:12px;color:rgba(255,255,255,.65);z-index:1}
+.fbpnl{margin:0 18px 14px;background:var(--wh);border-radius:16px;padding:14px;box-shadow:var(--sc);border:1px solid var(--bd)}
+.fbt{font-size:13px;font-weight:700;color:var(--tx);display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.fbi{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--bd);font-size:12px;color:var(--t2)}
+.fbi:last-child{border-bottom:none}
+.fbd{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.fbd.ok{background:var(--gr)}.fbd.wn{background:#F39C12}.fbd.in{background:var(--p)}
+.pst-row{display:flex;gap:10px;margin:0 18px 14px}
+.pst{flex:1;background:var(--wh);border-radius:13px;padding:11px;text-align:center;box-shadow:var(--sc);border:1px solid var(--bd)}
+.pstn{font-size:20px;font-weight:700}
+.pstl{font-size:10px;color:var(--tm);margin-top:2px}
+.pbtns{padding:0 18px;display:flex;gap:10px}
+
+/* ==============================
+   AI GURU
+============================== */
+#ag{background:var(--bg);display:flex;flex-direction:column}
+.ag-hd{background:linear-gradient(135deg,#3D1C00,#6B3A1F);padding:46px 22px 18px;position:relative;overflow:hidden;flex-shrink:0}
+.ag-av{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#FF6B00,#D4A017);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:10px;box-shadow:0 8px 24px rgba(255,107,0,.4);border:3px solid rgba(255,255,255,.2)}
+.ag-h2{font-size:17px;font-weight:700;color:#fff}
+.ag-p{font-size:12px;color:rgba(255,255,255,.7);margin-top:2px}
+.onl{display:inline-flex;align-items:center;gap:5px;margin-top:7px;font-size:11px;color:#4ADE80}
+.onld{width:6px;height:6px;border-radius:50%;background:#4ADE80;animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.qps{display:flex;gap:7px;padding:10px 18px 4px;overflow-x:auto;flex-shrink:0}
+.qps::-webkit-scrollbar{display:none}
+.qpc{flex-shrink:0;padding:7px 13px;border-radius:20px;border:2px solid var(--s);background:var(--sp);color:var(--s);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .2s}
+.qpc:active{background:var(--s);color:#fff}
+.chat{flex:1;overflow-y:auto;padding:12px 18px;display:flex;flex-direction:column;gap:11px}
+.chat::-webkit-scrollbar{display:none}
+.bbl{max-width:83%;padding:11px 13px;border-radius:18px;font-size:13px;line-height:1.65}
+.bot{background:var(--wh);color:var(--tx);border-radius:4px 18px 18px 18px;box-shadow:var(--sc);border:1px solid var(--bd);align-self:flex-start}
+.usr{background:linear-gradient(135deg,#FF6B00,#D94A00);color:#fff;border-radius:18px 18px 4px 18px;align-self:flex-end}
+.bt{font-size:10px;opacity:.55;margin-top:3px}
+.typing{display:flex;gap:4px;padding:4px 0}
+.tdot{width:7px;height:7px;border-radius:50%;background:var(--tm);animation:bounce 1.2s ease-in-out infinite}
+.tdot:nth-child(2){animation-delay:.2s}.tdot:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.cin-area{padding:10px 18px;background:var(--wh);border-top:1px solid var(--bd);display:flex;gap:9px;align-items:center;flex-shrink:0}
+.cin{flex:1;padding:10px 13px;border:2px solid var(--bd);border-radius:22px;font-size:13px;font-family:inherit;outline:none;background:var(--bg);color:var(--tx);transition:border-color .2s;resize:none;max-height:80px}
+.cin:focus{border-color:var(--s)}
+.sbtn{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#FF6B00,#D94A00);border:none;cursor:pointer;color:#fff;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 13px rgba(255,107,0,.4);transition:transform .2s;flex-shrink:0}
+.sbtn:active{transform:scale(.88)}
+.mug-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.mug{background:var(--sp);border-radius:10px;padding:8px;text-align:center;font-size:11px;color:var(--s);font-weight:600}
+.mug-ic{font-size:20px;display:block;margin-bottom:3px}
+
+/* ==============================
+   PROFILE
+============================== */
+#pf{background:var(--bg)}
+.pf-hd{background:linear-gradient(160deg,#3D1C00,#6B3A1F,#FF6B00);padding:48px 22px 28px;text-align:center;position:relative;overflow:hidden}
+.pf-av-w{display:inline-block;position:relative;margin-bottom:11px}
+.pf-av{width:78px;height:78px;border-radius:50%;background:linear-gradient(135deg,#FF6B00,#D4A017);border:4px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto}
+.lvbdg{position:absolute;bottom:0;right:-4px;background:var(--g);color:#fff;border-radius:12px;padding:3px 8px;font-size:10px;font-weight:700;border:2px solid rgba(255,255,255,.3)}
+.pf-nm{font-size:19px;font-weight:700;color:#fff}
+.pf-em{font-size:12px;color:rgba(255,255,255,.7);margin-top:2px}
+.pf-role{display:inline-block;margin-top:7px;padding:4px 12px;background:rgba(255,255,255,.2);border-radius:20px;font-size:11px;color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25)}
+.xp-w{margin:12px 0 0}
+.xp-lbl{font-size:11px;color:rgba(255,255,255,.7);margin-bottom:5px;display:flex;justify-content:space-between}
+.xp-bar{height:7px;background:rgba(255,255,255,.2);border-radius:7px;overflow:hidden}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--gl),var(--g));border-radius:7px;width:68%}
+.stats-row{display:flex;margin:14px 18px 0;background:var(--wh);border-radius:18px;box-shadow:var(--sc);overflow:hidden;border:1px solid var(--bd)}
+.sti{flex:1;text-align:center;padding:14px 6px;border-right:1px solid var(--bd)}
+.sti:last-child{border-right:none}
+.stn{font-size:19px;font-weight:700;color:var(--s)}
+.stl{font-size:10px;color:var(--tm);margin-top:2px}
+.ach-scroll{display:flex;gap:11px;padding:0 18px 6px;overflow-x:auto}
+.ach-scroll::-webkit-scrollbar{display:none}
+.ac{flex-shrink:0;width:77px;display:flex;flex-direction:column;align-items:center;gap:5px;background:var(--wh);border-radius:14px;padding:11px 7px;box-shadow:var(--sc);border:1px solid var(--bd);cursor:pointer}
+.ac-ic{font-size:27px}
+.ac-t{font-size:9px;font-weight:600;color:var(--tx);text-align:center;line-height:1.3}
+.ac.lock{opacity:.4;filter:grayscale(.6)}
+.cert-card{margin:0 18px 11px;border-radius:16px;padding:15px;position:relative;overflow:hidden}
+.cert-card::before{content:'';position:absolute;right:-10px;top:-10px;font-size:55px;opacity:.12}
+.mn-list{padding:0 18px}
+.mn{display:flex;align-items:center;gap:13px;padding:13px 0;border-bottom:1px solid var(--bd);cursor:pointer;transition:all .2s}
+.mn:active{opacity:.65}
+.mn-ic{width:37px;height:37px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.mn-tx{flex:1}
+.mn-t{font-size:14px;font-weight:500;color:var(--tx)}
+.mn-s{font-size:11px;color:var(--tm);margin-top:1px}
+.mn-ar{font-size:16px;color:var(--tm)}
+
+/* ── ROLE BADGE ── */
+.rbadge{position:absolute;top:10px;right:14px;padding:4px 11px;border-radius:14px;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.3);color:#fff}
+.rbadge.student{background:rgba(39,174,96,.5)}
+.rbadge.teacher{background:rgba(0,105,148,.5)}
+
+/* ── TEACHER PANEL ── */
+.tpnl{background:var(--wh);border-radius:18px;margin:0 18px 13px;padding:16px;box-shadow:var(--sc);border:1px solid var(--bd)}
+.tpnl-t{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.st-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.st-row:last-child{border-bottom:none}
+.st-nm{font-weight:500;color:var(--tx)}
+.st-prg{font-size:12px;color:var(--s);font-weight:600}
+.st-av{width:30px;height:30px;border-radius:50%;background:var(--sp);display:flex;align-items:center;justify-content:center;font-size:15px;margin-right:8px;flex-shrink:0}
+
+/* ORNAMENT */
+.orn{text-align:center;padding:6px 0;font-size:16px;color:var(--s);opacity:.25;letter-spacing:8px}
+
+/* MODAL */
+.modal{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:flex-end;justify-content:center;animation:fadeIn .2s ease}
+.modal.off{display:none}
+.modal-box{background:var(--wh);border-radius:24px 24px 0 0;padding:24px 22px 36px;width:100%}
+.modal-t{font-size:17px;font-weight:700;color:var(--tx);margin-bottom:14px;text-align:center}
+.modal-close{float:right;font-size:20px;cursor:pointer;color:var(--tm);margin-top:-4px}
+</style>
+</head>
+<body>
+<div class="shell">
+<div class="notch"></div>
+
+<!-- ══════════════ SPLASH ══════════════ -->
+<div class="scr on" id="sp">
+  <div class="sp-ring-wrap">
+    <div class="sp-ring"></div><div class="sp-ring"></div><div class="sp-ring"></div>
+    <div class="sp-ic">🦚</div>
+  </div>
+  <div class="sp-t">Aditi Bharatiya Nrityashala<span>आदिति भारतीय नृत्यशाला</span></div>
+  <div class="sp-tag">"नृत्य से जुड़ो, परंपरा को जियो"<br>AI-Powered Indian Dance Learning</div>
+  <div class="sp-bar"><div class="sp-fill"></div></div>
+  <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:6px">GBSBFORYOU Publications © 2025</div>
+</div>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div class="scr" id="lg">
+  <div class="lg-hd">
+    <div style="font-size:34px;margin-bottom:10px">🦚</div>
+    <div style="font-size:21px;font-weight:700;color:#fff;line-height:1.3">आदिति नृत्यशाला में<br>आपका स्वागत है</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.75);margin-top:5px">भारतीय शास्त्रीय नृत्य सीखें — AI के साथ</div>
+  </div>
+  <div class="lg-body">
+    <div style="margin-bottom:14px">
+      <div class="lbl">आप कौन हैं?</div>
+      <div class="role-row">
+        <div class="role-btn active" id="roleStudent" onclick="setRole('student')">
+          <span class="rb-ic">🎓</span>Student<br><small style="font-weight:400;font-size:10px">नृत्य सीखें</small>
+        </div>
+        <div class="role-btn" id="roleTeacher" onclick="setRole('teacher')">
+          <span class="rb-ic">👩‍🏫</span>Teacher<br><small style="font-weight:400;font-size:10px">कक्षा लें</small>
+        </div>
+      </div>
+    </div>
+    <div class="lbl">📱 Mobile Number</div>
+    <div class="igrp">
+      <div class="ipfx">🇮🇳 +91</div>
+      <input type="tel" placeholder="9876543210" maxlength="10" id="mobInp">
+    </div>
+    <button class="btn btn-s" onclick="doLogin()">📨 OTP भेजें / Send OTP</button>
+    <div class="divdr">या / OR</div>
+    <button class="btn btn-o" style="margin-bottom:10px" onclick="doLogin()">🔵 Google से Login</button>
+    <button class="btn" style="background:var(--wh);color:var(--tm);border:2px solid var(--bd)" onclick="doLogin()">👤 Guest के रूप में जारी रखें</button>
+    <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--tm)">Login करके आप हमारी <u>Terms</u> और <u>Privacy Policy</u> से सहमत हैं</div>
+  </div>
+</div>
+
+<!-- ══════════════ HOME ══════════════ -->
+<div class="scr" id="hm">
+  <div class="sbar" style="background:transparent;padding-top:44px;color:var(--t2)"><span>9:41</span><span>📶 🔋</span></div>
+  <div class="hm-hd">
+    <div id="rbadge" class="rbadge student">Student</div>
+    <div class="greet">🙏 नमस्ते,</div>
+    <div class="uname" id="hmName">अदिति कुमारी</div>
+    <div class="streak-c">
+      <div style="font-size:26px">🔥</div>
+      <div>
+        <div class="streak-n">12</div>
+        <div class="streak-t">दिन की streak! आज का अभ्यास करें</div>
+      </div>
+    </div>
+  </div>
+  <div class="body">
+    <!-- Teacher Dashboard (hidden for student) -->
+    <div id="tDash" style="display:none">
+      <div class="sec-hd"><span class="sec-t">📊 Teacher Dashboard</span></div>
+      <div class="tpnl">
+        <div class="tpnl-t">📋 छात्रों की प्रगति</div>
+        <div class="st-row"><div style="display:flex;align-items:center"><div class="st-av">👧</div>Priya Sharma</div><div class="st-prg">68% ▲</div></div>
+        <div class="st-row"><div style="display:flex;align-items:center"><div class="st-av">👦</div>Rahul Verma</div><div class="st-prg">42% →</div></div>
+        <div class="st-row"><div style="display:flex;align-items:center"><div class="st-av">👧</div>Ananya Singh</div><div class="st-prg">85% ▲</div></div>
+        <div class="st-row"><div style="display:flex;align-items:center"><div class="st-av">👧</div>Kavya Rao</div><div class="st-prg">31% ↓</div></div>
+      </div>
+      <div class="tpnl">
+        <div class="tpnl-t">📅 आज की कक्षाएं</div>
+        <div class="st-row"><div>10:00 AM — भरतनाट्यम Batch A</div><div style="font-size:12px;color:var(--gr);font-weight:600">Live</div></div>
+        <div class="st-row"><div>2:00 PM — कथक Beginners</div><div style="font-size:12px;color:var(--p);font-weight:600">Upcoming</div></div>
+        <div class="st-row"><div>5:00 PM — ओडिसी Advanced</div><div style="font-size:12px;color:var(--tm);font-weight:600">Scheduled</div></div>
+      </div>
+    </div>
+
+    <!-- Student Continue Learning -->
+    <div id="sDash">
+      <div class="sec-hd"><span class="sec-t">▶ जारी रखें</span><span class="sec-l">सभी →</span></div>
+      <div class="cont-card" onclick="go('cd')">
+        <div class="cont-thumb">💃</div>
+        <div style="flex:1">
+          <div class="ct">भरतनाट्यम – अड्डावु</div>
+          <div class="cs">पाठ 5 / 12 • गुरु सुनीता राव</div>
+          <div class="pbar"><div class="pfill" style="width:42%"></div></div>
+          <div class="plb">42% पूर्ण</div>
+        </div>
+      </div>
+      <div class="sec-hd" style="padding-top:18px"><span class="sec-t">⚡ त्वरित क्रिया</span></div>
+      <div class="qgrid">
+        <div class="qcard qc-s" onclick="go('co')"><div class="qic">📚</div><div class="qt">मेरे कोर्स</div><div class="qs">3 सक्रिय</div></div>
+        <div class="qcard qc-p" onclick="go('pr')"><div class="qic">🎯</div><div class="qt">आज अभ्यास</div><div class="qs">30 मिनट</div></div>
+        <div class="qcard qc-g" onclick="go('ag')"><div class="qic">🤖</div><div class="qt">AI गुरु</div><div class="qs">ऑनलाइन</div></div>
+        <div class="qcard qc-gr" onclick="go('pf')"><div class="qic">🏆</div><div class="qt">प्रमाणपत्र</div><div class="qs">2 अर्जित</div></div>
+      </div>
+    </div>
+
+    <!-- Today's Focus -->
+    <div class="sec-hd"><span class="sec-t">🎯 आज का लक्ष्य</span></div>
+    <div class="focus-card">
+      <div class="fc-sub">🦚 आज की मुद्रा</div>
+      <div class="fc-t">🤌 पताका मुद्रा</div>
+      <div class="fc-s">28 हस्तमुद्राओं में से एक • भरतनाट्यम</div>
+      <button class="fc-btn" onclick="go('pr')">अभी सीखें →</button>
+    </div>
+
+    <!-- Teachers -->
+    <div class="sec-hd"><span class="sec-t">👩‍🏫 हमारे गुरु</span><span class="sec-l">सभी →</span></div>
+    <div class="hscroll">
+      <div class="tcard"><div class="tav" style="background:linear-gradient(135deg,#FF6B00,#FFB347)">🙏<div class="tbdg">✓</div></div><div class="tnm">सुनीता राव</div><div class="tst">भरतनाट्यम</div></div>
+      <div class="tcard"><div class="tav" style="background:linear-gradient(135deg,#006994,#0087BD)">💃<div class="tbdg">✓</div></div><div class="tnm">रेखा शर्मा</div><div class="tst">कथक</div></div>
+      <div class="tcard"><div class="tav" style="background:linear-gradient(135deg,#8B4513,#D2691E)">🎭<div class="tbdg">✓</div></div><div class="tnm">प्रिया नायर</div><div class="tst">कुचिपुड़ी</div></div>
+      <div class="tcard"><div class="tav" style="background:linear-gradient(135deg,#6B21A8,#A855F7)">🌺<div class="tbdg">✓</div></div><div class="tnm">मीरा दास</div><div class="tst">ओडिसी</div></div>
+      <div class="tcard"><div class="tav" style="background:linear-gradient(135deg,#D4A017,#F59E0B)">🎪<div class="tbdg">✓</div></div><div class="tnm">रमा गुप्ता</div><div class="tst">लोक नृत्य</div></div>
+    </div>
+    <div class="orn">❋ ❋ ❋</div>
+    <div style="height:8px"></div>
+  </div>
+  <div class="bnav" id="bnav-hm">
+    <div class="ni on" onclick="navTo('hm')"><span class="ni-ic">🏠</span><span class="ni-lb">होम</span></div>
+    <div class="ni" onclick="navTo('co')"><span class="ni-ic">📚</span><span class="ni-lb">कोर्स</span></div>
+    <div class="ni" onclick="navTo('pr')"><span class="ni-ic">🎯</span><span class="ni-lb">अभ्यास</span></div>
+    <div class="ni" onclick="navTo('ag')"><span class="ni-ic">🤖</span><span class="ni-lb">AI गुरु</span></div>
+    <div class="ni" onclick="navTo('pf')"><span class="ni-ic">👤</span><span class="ni-lb">प्रोफाइल</span></div>
+  </div>
+</div>
+
+<!-- ══════════════ COURSES ══════════════ -->
+<div class="scr" id="co">
+  <div class="sbar" style="padding-top:44px;background:linear-gradient(135deg,#006994,#004F72);color:rgba(255,255,255,.8)"><span>9:41</span><span>📶 🔋</span></div>
+  <div class="co-hd" style="padding-top:6px">
+    <div style="font-size:19px;font-weight:700;color:#fff">🎭 नृत्य कोर्स</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.75);margin-top:3px">भारतीय शास्त्रीय एवं लोक नृत्य</div>
+  </div>
+  <div class="srch"><span>🔍</span><input type="text" placeholder="कोर्स खोजें..."></div>
+  <div class="hscroll" style="padding-top:10px">
+    <button class="fchip on">सभी</button>
+    <button class="fchip">शास्त्रीय</button>
+    <button class="fchip">लोक</button>
+    <button class="fchip">शुरुआती</button>
+    <button class="fchip">उन्नत</button>
+  </div>
+  <div style="padding:10px 18px 4px;font-size:12px;color:var(--tm)">5 शैलियाँ • 24+ कोर्स</div>
+  <div class="body" style="padding-bottom:82px">
+    <div class="dcard" onclick="go('cd')">
+      <div class="dbanner" style="background:linear-gradient(135deg,#FF6B00,#D94A00)">💃</div>
+      <div class="dbody"><div class="dt">भरतनाट्यम</div><div class="dorg">🗺 तमिलनाडु</div><div class="ddesc">भारत का सबसे प्राचीन शास्त्रीय नृत्य, नट्यशास्त्र पर आधारित।</div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-s">📖 8 कोर्स</span><span class="tag tag-g">⭐ 4.9</span><span class="tag tag-p">👥 1.2K</span></div></div>
+    </div>
+    <div class="dcard" onclick="go('cd')">
+      <div class="dbanner" style="background:linear-gradient(135deg,#006994,#004F72)">🕺</div>
+      <div class="dbody"><div class="dt">कथक</div><div class="dorg">🗺 उत्तर प्रदेश</div><div class="ddesc">तेज़ चक्कर और जटिल पदसंचालन का अद्भुत मेल।</div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-s">📖 6 कोर्स</span><span class="tag tag-g">⭐ 4.8</span><span class="tag tag-p">👥 980</span></div></div>
+    </div>
+    <div class="dcard" onclick="go('cd')">
+      <div class="dbanner" style="background:linear-gradient(135deg,#6B21A8,#A855F7)">🌺</div>
+      <div class="dbody"><div class="dt">ओडिसी</div><div class="dorg">🗺 ओडिशा</div><div class="ddesc">त्रिभंग और चौक मुद्राओं की भावपूर्ण अभिव्यक्ति।</div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-s">📖 5 कोर्स</span><span class="tag tag-g">⭐ 4.7</span><span class="tag tag-p">👥 760</span></div></div>
+    </div>
+    <div class="dcard" onclick="go('cd')">
+      <div class="dbanner" style="background:linear-gradient(135deg,#8B4513,#D2691E)">🎭</div>
+      <div class="dbody"><div class="dt">कुचिपुड़ी</div><div class="dorg">🗺 आंध्र प्रदेश</div><div class="ddesc">नाटक और नृत्य का अनूठा संगम।</div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-s">📖 3 कोर्स</span><span class="tag tag-g">⭐ 4.8</span><span class="tag tag-p">👥 540</span></div></div>
+    </div>
+    <div class="dcard" onclick="go('cd')">
+      <div class="dbanner" style="background:linear-gradient(135deg,#D4A017,#F59E0B)">🎪</div>
+      <div class="dbody"><div class="dt">लोक नृत्य</div><div class="dorg">🗺 सम्पूर्ण भारत</div><div class="ddesc">गरबा, भांगड़ा, बिहू — लोक परम्पराओं का उत्सव।</div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-s">📖 2 कोर्स</span><span class="tag tag-g">⭐ 4.9</span><span class="tag tag-p">👥 1.5K</span></div></div>
+    </div>
+    <div class="orn">❋ ❋ ❋</div>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="navTo('hm')"><span class="ni-ic">🏠</span><span class="ni-lb">होम</span></div>
+    <div class="ni on" onclick="navTo('co')"><span class="ni-ic">📚</span><span class="ni-lb">कोर्स</span></div>
+    <div class="ni" onclick="navTo('pr')"><span class="ni-ic">🎯</span><span class="ni-lb">अभ्यास</span></div>
+    <div class="ni" onclick="navTo('ag')"><span class="ni-ic">🤖</span><span class="ni-lb">AI गुरु</span></div>
+    <div class="ni" onclick="navTo('pf')"><span class="ni-ic">👤</span><span class="ni-lb">प्रोफाइल</span></div>
+  </div>
+</div>
+
+<!-- ══════════════ COURSE DETAIL ══════════════ -->
+<div class="scr" id="cd">
+  <div class="cd-hd">
+    <div class="bk" onclick="go('co')">← वापस</div>
+    <div style="font-size:19px;font-weight:700;color:#fff">💃 भरतनाट्यम – नींव</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.8);margin-top:3px">गुरु सुनीता राव • शुरुआती स्तर</div>
+    <div class="vmeta"><span class="vm">⏱ 24 घंटे</span><span class="vm">📖 12 पाठ</span><span class="vm">⭐ 4.9 (287)</span></div>
+  </div>
+  <div class="body">
+    <div style="padding:18px 18px 0">
+      <div class="vpl">
+        <div class="pbtn">▶</div>
+        <div class="vl">परिचय वीडियो • 3:45 मिनट</div>
+      </div>
+      <div class="prg-card">
+        <div class="prg-row"><span class="ll">आपकी प्रगति</span><span class="lv">42%</span></div>
+        <div class="pbar" style="height:8px"><div class="pfill" style="width:42%"></div></div>
+        <div style="font-size:11px;color:var(--tm);margin-top:5px">5 / 12 पाठ पूर्ण</div>
+      </div>
+      <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:10px">📋 पाठ सूची</div>
+      <div class="li"><div class="lnum done">✓</div><div class="linf"><div class="lt">भरतनाट्यम का इतिहास</div><div class="ld">⏱ 12 मिनट • पूर्ण</div></div><div class="lar">▶</div></div>
+      <div class="li"><div class="lnum done">✓</div><div class="linf"><div class="lt">मूलभूत मुद्राएं – भाग 1</div><div class="ld">⏱ 18 मिनट • पूर्ण</div></div><div class="lar">▶</div></div>
+      <div class="li"><div class="lnum done">✓</div><div class="linf"><div class="lt">अड्डावु – बुनियादी कदम</div><div class="ld">⏱ 25 मिनट • पूर्ण</div></div><div class="lar">▶</div></div>
+      <div class="li" style="background:var(--sp);margin:0 -18px;padding:11px 18px;border-radius:12px"><div class="lnum cur">4</div><div class="linf"><div class="lt" style="color:var(--s)">👈 अड्डावु – उन्नत (चालू)</div><div class="ld">⏱ 30 मिनट • जारी रखें</div></div><div class="lar" style="color:var(--s)">▶</div></div>
+      <div class="li"><div class="lnum done">✓</div><div class="linf"><div class="lt">नट्टु अड्डावु</div><div class="ld">⏱ 22 मिनट • पूर्ण</div></div><div class="lar">▶</div></div>
+      <div class="li"><div class="lnum lock">🔒</div><div class="linf"><div class="lt lock">तत्तु अड्डावु</div><div class="ld">⏱ 28 मिनट • लॉक</div></div><div class="lar">🔒</div></div>
+      <div class="li"><div class="lnum lock">🔒</div><div class="linf"><div class="lt lock">हस्तमुद्रा – सभी 28</div><div class="ld">⏱ 35 मिनट • लॉक</div></div><div class="lar">🔒</div></div>
+    </div>
+    <div style="height:10px"></div>
+  </div>
+  <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 18px;background:var(--wh);border-top:1px solid var(--bd)">
+    <button class="btn btn-s" onclick="go('co')">▶ पाठ 4 जारी रखें</button>
+  </div>
+</div>
+
+<!-- ══════════════ PRACTICE ══════════════ -->
+<div class="scr" id="pr">
+  <div class="sbar" style="padding-top:44px;background:linear-gradient(135deg,#27AE60,#1A7A42);color:rgba(255,255,255,.8)"><span>9:41</span><span>📶 🔋</span></div>
+  <div class="pr-hd" style="padding-top:6px">
+    <div style="font-size:19px;font-weight:700;color:#fff">🎯 AI अभ्यास</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.8);margin-top:3px">कैमरे से अपनी मुद्रा जांचें</div>
+  </div>
+  <div class="body">
+    <div class="cam">
+      <div class="sk">🧘</div>
+      <div class="scanl"></div>
+      <div class="camlb">📸 Camera Placeholder</div>
+      <div class="aibdg">🤖 AI Pose Detection — Coming in V0.2</div>
+    </div>
+    <div style="margin:0 18px 13px;background:linear-gradient(135deg,#FF6B00,#D94A00);border-radius:16px;padding:13px;color:#fff;display:flex;align-items:center;gap:12px">
+      <div style="font-size:38px">🤌</div>
+      <div><div style="font-size:11px;opacity:.8">आज की मुद्रा</div><div style="font-size:16px;font-weight:700">पताका मुद्रा</div><div style="font-size:11px;opacity:.8">ध्वज मुद्रा • भरतनाट्यम</div></div>
+    </div>
+    <div class="fbpnl">
+      <div class="fbt">🤖 AI फीडबैक (Demo)</div>
+      <div class="fbi"><div class="fbd ok"></div>भुजाओं की स्थिति — उत्तम ✅</div>
+      <div class="fbi"><div class="fbd wn"></div>कमर का झुकाव — थोड़ा सुधारें ⚠️</div>
+      <div class="fbi"><div class="fbd in"></div>उंगलियों की दिशा — ध्यान दें 👆</div>
+      <div class="fbi"><div class="fbd ok"></div>पैरों की ग्राउंडिंग — सही है ✅</div>
+    </div>
+    <div class="pst-row">
+      <div class="pst"><div class="pstn" style="color:var(--s)">18</div><div class="pstl">मिनट आज</div></div>
+      <div class="pst"><div class="pstn" style="color:var(--p)">84%</div><div class="pstl">सटीकता</div></div>
+      <div class="pst"><div class="pstn" style="color:var(--gr)">+45</div><div class="pstl">XP आज</div></div>
+    </div>
+    <div class="pbtns">
+      <button class="btn btn-o" style="flex:1;padding:13px">⏸ रोकें</button>
+      <button class="btn btn-g" style="flex:2;padding:13px" onclick="alert('अभ्यास शुरू होगा!\nV0.2 में Camera Integration आएगा.')">▶ अभ्यास शुरू</button>
+    </div>
+    <div class="orn" style="margin-top:10px">❋ ❋ ❋</div>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="navTo('hm')"><span class="ni-ic">🏠</span><span class="ni-lb">होम</span></div>
+    <div class="ni" onclick="navTo('co')"><span class="ni-ic">📚</span><span class="ni-lb">कोर्स</span></div>
+    <div class="ni on" onclick="navTo('pr')"><span class="ni-ic">🎯</span><span class="ni-lb">अभ्यास</span></div>
+    <div class="ni" onclick="navTo('ag')"><span class="ni-ic">🤖</span><span class="ni-lb">AI गुरु</span></div>
+    <div class="ni" onclick="navTo('pf')"><span class="ni-ic">👤</span><span class="ni-lb">प्रोफाइल</span></div>
+  </div>
+</div>
+
+<!-- ══════════════ AI GURU ══════════════ -->
+<div class="scr" id="ag">
+  <div class="sbar" style="padding-top:44px;background:linear-gradient(135deg,#3D1C00,#6B3A1F);color:rgba(255,255,255,.8)"><span>9:41</span><span>📶 🔋</span></div>
+  <div class="ag-hd" style="padding-top:6px">
+    <div class="ag-av">🙏</div>
+    <div class="ag-h2">AI गुरु — नृत्याचार्य</div>
+    <div class="ag-p">Claude AI powered • 24/7 उपलब्ध</div>
+    <div class="onl"><div class="onld"></div>ऑनलाइन</div>
+  </div>
+  <div class="qps">
+    <button class="qpc" onclick="quickSend('मुद्राएं सिखाओ')">🤌 मुद्राएं सिखाओ</button>
+    <button class="qpc" onclick="quickSend('कथक क्या है?')">🕺 कथक क्या है?</button>
+    <button class="qpc" onclick="quickSend('आसन कैसे सुधारें?')">🧘 आसन सुधारें</button>
+    <button class="qpc" onclick="quickSend('आज क्या सीखूं?')">🎯 आज का plan</button>
+    <button class="qpc" onclick="quickSend('ताल और लय क्या है?')">🥁 ताल सीखें</button>
+  </div>
+  <div class="chat" id="chatBox">
+    <div class="bbl bot">🙏 <strong>नमस्ते! मैं आपका AI गुरु हूं।</strong><br><br>मुझसे पूछें — मुद्राएं, नृत्य शैलियां, आसन सुधार, या आज का अभ्यास plan।<br><br>मैं Claude AI से powered हूं और आपकी हर जिज्ञासा का उत्तर दूंगा। 🎭<div class="bt">अभी</div></div>
+  </div>
+  <div class="cin-area">
+    <textarea class="cin" id="chatIn" placeholder="गुरु से पूछें..." rows="1" onkeypress="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"></textarea>
+    <button class="sbtn" onclick="sendMsg()">➤</button>
+  </div>
+  <div class="bnav" style="position:relative;margin-bottom:-8px">
+    <div class="ni" onclick="navTo('hm')"><span class="ni-ic">🏠</span><span class="ni-lb">होम</span></div>
+    <div class="ni" onclick="navTo('co')"><span class="ni-ic">📚</span><span class="ni-lb">कोर्स</span></div>
+    <div class="ni" onclick="navTo('pr')"><span class="ni-ic">🎯</span><span class="ni-lb">अभ्यास</span></div>
+    <div class="ni on" onclick="navTo('ag')"><span class="ni-ic">🤖</span><span class="ni-lb">AI गुरु</span></div>
+    <div class="ni" onclick="navTo('pf')"><span class="ni-ic">👤</span><span class="ni-lb">प्रोफाइल</span></div>
+  </div>
+</div>
+
+<!-- ══════════════ PROFILE ══════════════ -->
+<div class="scr" id="pf">
+  <div class="sbar" style="padding-top:44px;background:linear-gradient(160deg,#3D1C00,#6B3A1F);color:rgba(255,255,255,.8)"><span>9:41</span><span>📶 🔋</span></div>
+  <div class="pf-hd" style="padding-top:6px">
+    <div class="pf-av-w">
+      <div class="pf-av" id="pfAv">👩</div>
+      <div class="lvbdg">Lv. 7</div>
+    </div>
+    <div class="pf-nm" id="pfNm">अदिति कुमारी</div>
+    <div class="pf-em">aditi@example.com</div>
+    <div class="pf-role" id="pfRole">🎓 Student</div>
+    <div class="xp-w">
+      <div class="xp-lbl"><span>⭐ 3,450 XP</span><span>Level 8: 550 XP शेष</span></div>
+      <div class="xp-bar"><div class="xp-fill"></div></div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="stats-row">
+      <div class="sti"><div class="stn">42</div><div class="stl">पाठ पूर्ण</div></div>
+      <div class="sti"><div class="stn">18h</div><div class="stl">अभ्यास</div></div>
+      <div class="sti"><div class="stn">12🔥</div><div class="stl">Streak</div></div>
+      <div class="sti"><div class="stn">2</div><div class="stl">प्रमाणपत्र</div></div>
+    </div>
+    <div class="sec-hd"><span class="sec-t">🏆 उपलब्धियां</span><span class="sec-l">सभी →</span></div>
+    <div class="ach-scroll">
+      <div class="ac"><span class="ac-ic">🔥</span><span class="ac-t">10 Day Streak</span></div>
+      <div class="ac"><span class="ac-ic">🎓</span><span class="ac-t">First Course</span></div>
+      <div class="ac"><span class="ac-ic">🤌</span><span class="ac-t">Mudra Master</span></div>
+      <div class="ac lock"><span class="ac-ic">👑</span><span class="ac-t">Guru Level</span></div>
+      <div class="ac lock"><span class="ac-ic">🏅</span><span class="ac-t">100 Hours</span></div>
+    </div>
+    <div class="sec-hd"><span class="sec-t">📜 प्रमाणपत्र</span></div>
+    <div class="cert-card" style="background:linear-gradient(135deg,#D4A017,#F59E0B)">
+      <div style="font-size:11px;color:rgba(255,255,255,.8)">✅ प्रमाणित</div>
+      <div style="font-size:15px;font-weight:700;color:#fff;margin:3px 0">भरतनाट्यम – Foundation</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.8)">15 जून 2025 • गुरु सुनीता राव</div>
+      <button style="margin-top:9px;background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.4);color:#fff;padding:5px 13px;border-radius:9px;font-size:11px;font-family:inherit;cursor:pointer">⬇ डाउनलोड</button>
+    </div>
+    <div class="sec-hd"><span class="sec-t">⚙ सेटिंग्स</span></div>
+    <div class="mn-list">
+      <div class="mn"><div class="mn-ic" style="background:#FFF0E0">✏️</div><div class="mn-tx"><div class="mn-t">प्रोफाइल संपादित करें</div><div class="mn-s">नाम, फोटो बदलें</div></div><span class="mn-ar">›</span></div>
+      <div class="mn"><div class="mn-ic" style="background:#E0F4FF">🔔</div><div class="mn-tx"><div class="mn-t">सूचनाएं</div><div class="mn-s">अभ्यास रिमाइंडर</div></div><span class="mn-ar">›</span></div>
+      <div class="mn"><div class="mn-ic" style="background:#F0FFF4">🔗</div><div class="mn-tx"><div class="mn-t">App Link शेयर करें</div><div class="mn-s">Friends को invite करें</div></div><span class="mn-ar" onclick="shareApp()">↗</span></div>
+      <div class="mn" onclick="go('lg')"><div class="mn-ic" style="background:#FFF0F0">🚪</div><div class="mn-tx"><div class="mn-t" style="color:#E74C3C">Logout</div><div class="mn-s">अकाउंट से बाहर निकलें</div></div><span class="mn-ar" style="color:#E74C3C">›</span></div>
+    </div>
+    <div style="text-align:center;padding:18px;font-size:11px;color:var(--tm)">
+      Aditi Bharatiya Nrityashala v1.0<br>GBSBFORYOU Publications © 2025<br>
+      <span style="color:var(--s);cursor:pointer" onclick="shareApp()">🔗 App Link शेयर करें</span>
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="navTo('hm')"><span class="ni-ic">🏠</span><span class="ni-lb">होम</span></div>
+    <div class="ni" onclick="navTo('co')"><span class="ni-ic">📚</span><span class="ni-lb">कोर्स</span></div>
+    <div class="ni" onclick="navTo('pr')"><span class="ni-ic">🎯</span><span class="ni-lb">अभ्यास</span></div>
+    <div class="ni" onclick="navTo('ag')"><span class="ni-ic">🤖</span><span class="ni-lb">AI गुरु</span></div>
+    <div class="ni on" onclick="navTo('pf')"><span class="ni-ic">👤</span><span class="ni-lb">प्रोफाइल</span></div>
+  </div>
+</div>
+
+</div><!-- shell -->
+
+<script>
+// ── STATE ──
+var role = 'student';
+var userName = 'अदिति कुमारी';
+var cur = 'sp';
+
+// ── NAVIGATION ──
+function go(id){
+  document.getElementById(cur).classList.remove('on');
+  document.getElementById(id).classList.add('on');
+  cur = id;
+}
+
+function navTo(id){
+  go(id);
+  // sync bottom nav active state handled by screen's own .on class on nav items
+}
+
+// ── ROLE ──
+function setRole(r){
+  role = r;
+  document.getElementById('roleStudent').classList.toggle('active', r==='student');
+  document.getElementById('roleTeacher').classList.toggle('active', r==='teacher');
+}
+
+// ── LOGIN ──
+function doLogin(){
+  var nm = role === 'teacher' ? 'गुरु सुनीता राव' : 'अदिति कुमारी';
+  userName = nm;
+  document.getElementById('hmName').textContent = nm;
+  document.getElementById('pfNm').textContent = nm;
+  var badge = document.getElementById('rbadge');
+  if(role === 'teacher'){
+    badge.textContent = 'Teacher';
+    badge.className = 'rbadge teacher';
+    document.getElementById('pfAv').textContent = '👩‍🏫';
+    document.getElementById('pfRole').textContent = '👩‍🏫 Teacher';
+    document.getElementById('tDash').style.display = 'block';
+    document.getElementById('sDash').style.display = 'none';
+  } else {
+    badge.textContent = 'Student';
+    badge.className = 'rbadge student';
+    document.getElementById('pfAv').textContent = '👩';
+    document.getElementById('pfRole').textContent = '🎓 Student';
+    document.getElementById('tDash').style.display = 'none';
+    document.getElementById('sDash').style.display = 'block';
+  }
+  go('hm');
+}
+
+// ── FILTER CHIPS ──
+document.querySelectorAll('.fchip').forEach(function(c){
+  c.addEventListener('click', function(){
+    this.closest('.hscroll').querySelectorAll('.fchip').forEach(function(x){x.classList.remove('on')});
+    this.classList.add('on');
+  });
+});
+
+// ── SHARE ──
+function shareApp(){
+  var txt = 'Aditi Bharatiya Nrityashala — AI-Powered Indian Dance Learning App\n\nJoin me in learning classical Indian dance!\n\nLink: ' + window.location.href;
+  if(navigator.share){
+    navigator.share({title:'Aditi Nrityashala', text:txt, url:window.location.href});
+  } else if(navigator.clipboard){
+    navigator.clipboard.writeText(window.location.href).then(function(){
+      alert('App link copied!\nShare this link with students and teachers.');
+    });
+  } else {
+    alert('App Link:\n' + window.location.href + '\n\nCopy karo aur share karo!');
+  }
+}
+
+// ── AI GURU CHAT ──
+var SYSTEM = `You are "Nrityacharya AI Guru" — an expert in Indian classical dance forms: Bharatanatyam, Kathak, Kuchipudi, Odissi, and Folk dances. You teach in simple Hindi mixed with English (Hinglish). Keep answers concise, friendly, practical. Use emojis. Format with bullet points where helpful. Always encourage the student. If asked about mudras, list them clearly. If asked for a practice plan, give a structured day plan.`;
+
+async function callClaude(userMsg){
+  var chat = window._chatHistory || [];
+  chat.push({role:'user', content: userMsg});
+  window._chatHistory = chat;
+  try {
+    var resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        system: SYSTEM,
+        messages: chat
+      })
+    });
+    var data = await resp.json();
+    var reply = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : 'माफ करें, एक त्रुटि हुई। कृपया दोबारा पूछें।';
+    window._chatHistory.push({role:'assistant', content: reply});
+    return reply;
+  } catch(e){
+    return 'नेटवर्क त्रुटि। कृपया इंटरनेट जांचें और दोबारा प्रयास करें।';
+  }
+}
+
+function addBubble(text, isBot){
+  var box = document.getElementById('chatBox');
+  var d = document.createElement('div');
+  d.className = 'bbl ' + (isBot ? 'bot' : 'usr');
+  var now = new Date();
+  var t = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+  if(isBot){
+    d.innerHTML = text + '<div class="bt">' + t + '</div>';
+  } else {
+    d.innerHTML = text + '<div class="bt">' + t + '</div>';
+  }
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+  return d;
+}
+
+function addTyping(){
+  var box = document.getElementById('chatBox');
+  var d = document.createElement('div');
+  d.className = 'bbl bot';
+  d.id = 'typing';
+  d.innerHTML = '<div class="typing"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>';
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+}
+
+function removeTyping(){
+  var t = document.getElementById('typing');
+  if(t) t.remove();
+}
+
+async function sendMsg(){
+  var inp = document.getElementById('chatIn');
+  var msg = inp.value.trim();
+  if(!msg) return;
+  inp.value = '';
+  inp.style.height = 'auto';
+  addBubble(msg, false);
+  addTyping();
+  var reply = await callClaude(msg);
+  removeTyping();
+  // Convert markdown-ish to HTML
+  reply = reply.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+  reply = reply.replace(/\n/g,'<br>');
+  addBubble(reply, true);
+}
+
+function quickSend(msg){
+  document.getElementById('chatIn').value = msg;
+  sendMsg();
+}
+
+// Auto-resize textarea
+document.getElementById('chatIn').addEventListener('input', function(){
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 80) + 'px';
+});
+
+// ── SPLASH ──
+setTimeout(function(){ go('lg'); }, 3000);
+</script>
+</body>
+</html>
